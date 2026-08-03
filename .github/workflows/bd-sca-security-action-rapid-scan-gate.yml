@@ -66,7 +66,7 @@ jobs:
          # detect_args: '--detect.blackduck.scan.mode=INTELLIGENT'
 
           detect_args: |
-            --detect.project.name=busybox-1.31-demo
+            --detect.project.name=busybox-1.31.1-demo
             --detect.project.version.name=1.0
            
           # --detect.blackduck.scan.mode=INTELLIGENT  # for FULL scan 
