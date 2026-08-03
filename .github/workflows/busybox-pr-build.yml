@@ -1,0 +1,53 @@
+name: BusyBox 1.31 PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            gcc \
+            make \
+            bzip2 \
+            wget
+
+      - name: Verify BusyBox Version
+        run: |
+          grep '^VERSION =' Makefile
+          grep '^PATCHLEVEL =' Makefile
+
+      - name: Configure BusyBox
+        run: |
+          make distclean
+          make allnoconfig
+
+      - name: Build BusyBox
+        run: |
+          make
+
+      #- name: Verify Binary
+      #  run: |
+      #    file busybox
+      #    ./busybox --help | head -20
+
+      #- name: Upload Artifact
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: busybox-binary
+      #    path: busybox
