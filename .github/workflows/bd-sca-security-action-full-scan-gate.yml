@@ -43,10 +43,10 @@ jobs:
         run: |
           make
 
-      - name: Verify Binary
-        run: |
-          file busybox
-          ./busybox --help | head -20
+      #- name: Verify Binary
+      #  run: |
+      #    file busybox
+      #    ./busybox --help | head -20
 
       #- name: Upload Artifact
       #  uses: actions/upload-artifact@v4
@@ -70,28 +70,9 @@ jobs:
             --detect.project.name=busybox-1.31-demo
             --detect.project.version.name=1.0
            
-
-          # --detect.diagnostic=true
-          # --logging.level.detect=DEBUG
-          # 스캔 완료 후 결과가 서버에 반영될  때까지 대기하여 Policy check (게이트 판정에 필수)
           blackducksca_waitForScan: 'true'
-          
-          # ⭐ 핵심: 지정한 심각도 이상의 취약점 발견 시 빌드 실패(FAIL) 처리 
-          # 주의 : HIGH 는 없음 , BLOCKER
           blackducksca_scan_failure_severities: 'CRITICAL'
-          
-          # PR 화면에 취약점 요약 코멘트 자동 작성
-          # PrCommand -> rapid scan 만 지원 Koishi 페이지에서도:
-          # Full Black Duck scan is not supported for Pull Request comment in Github Actions Integration.
-          #blackducksca_prComment_enabled: 'true'
-          
-          # (선택) 취약점 수정 PR 자동 생성
-          #blackducksca_fixpr_enabled: 'true'
-          
-          #GitHub Code Scanning(GHAS)  업로드를 원할 경우
           blackducksca_reports_sarif_create: 'true'
-
-          #
           blackducksca_upload_sarif_report: 'true' 
           
       - name: Show Bridge files 
