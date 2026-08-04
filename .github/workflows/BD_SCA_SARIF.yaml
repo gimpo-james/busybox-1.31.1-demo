@@ -1,0 +1,45 @@
+name: Black Duck SCA SARIF (Push)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
+
+jobs:
+  blackduck-sca:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Black Duck SCA scan
+        uses: blackduck-inc/black-duck-security-scan@v2
+        with:
+          blackducksca_url: ${{ env.BLACKDUCK_URL }}
+          blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          blackducksca_scan_full: true
+          blackducksca_waitForScan: true
+          blackducksca_reports_sarif_create: true
+          blackducksca_reports_sarif_severities: 'CRITICAL,HIGH,MEDIUM,LOW'
+          blackducksca_scan_failure_severities: 'CRITICAL'
+          detect_args: >-
+            --detect.blackduck.scan.mode=INTELLIGENT
+            --detect.project.name=busybox-1.31-demo
+            --detect.project.version.name=1.0
+
+      - name: Upload SARIF to GitHub Code Scanning
+        if: always() && hashFiles('.blackduck/integrations/blackducksca/sarif/report.sarif.json') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: .blackduck/integrations/blackducksca/sarif/report.sarif.json
+          category: black-duck-sca
