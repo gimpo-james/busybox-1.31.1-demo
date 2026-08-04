@@ -77,8 +77,8 @@ jobs:
           blackducksca_waitForScan: 'true'
           
           # ⭐ 핵심: 지정한 심각도 이상의 취약점 발견 시 빌드 실패(FAIL) 처리 
-          # 주의 : HIGH 는 없음 
-          blackducksca_scan_failure_severities: 'BLOCKER,CRITICAL'
+          # 주의 : HIGH 는 없음 , BLOCKER
+          blackducksca_scan_failure_severities: 'CRITICAL'
           
           # PR 화면에 취약점 요약 코멘트 자동 작성
           # PrCommand -> rapid scan 만 지원 Koishi 페이지에서도:
