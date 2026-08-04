@@ -32,7 +32,7 @@ jobs:
           blackducksca_reports_sarif_create: true
           blackducksca_reports_sarif_severities: 'CRITICAL,HIGH,MEDIUM,LOW'
           blackducksca_scan_failure_severities: 'CRITICAL'
-          detect_args: >-
+          detect_args: |
             --detect.blackduck.scan.mode=INTELLIGENT
             --detect.project.name=busybox-1.31-demo
             --detect.project.version.name=1.0
