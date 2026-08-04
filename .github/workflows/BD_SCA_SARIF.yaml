@@ -53,7 +53,7 @@ jobs:
           blackducksca_url: ${{ env.BLACKDUCK_URL }}
           blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}
           blackducksca_scan_full: true
-          #blackducksca_waitForScan: true
+          blackducksca_waitForScan: true
           blackducksca_reports_sarif_create: true
           blackducksca_reports_sarif_severities: 'CRITICAL,HIGH,MEDIUM,LOW'
           blackducksca_scan_failure_severities: 'CRITICAL'
@@ -61,6 +61,7 @@ jobs:
             --detect.blackduck.scan.mode=INTELLIGENT
             --detect.project.name=busybox-1.31-demo
             --detect.project.version.name=1.0
+            --detect.report.timeout=1800
 
       - name: Upload SARIF to GitHub Code Scanning
         if: always() && hashFiles('.blackduck/integrations/blackducksca/sarif/report.sarif.json') != ''
