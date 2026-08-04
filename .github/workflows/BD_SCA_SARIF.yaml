@@ -22,6 +22,31 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            gcc \
+            make \
+            bzip2 \
+            wget
+
+      - name: Verify BusyBox Version
+        run: |
+          grep '^VERSION =' Makefile
+          grep '^PATCHLEVEL =' Makefile
+
+      - name: Configure BusyBox
+        run: |
+          make distclean
+          make allnoconfig
+
+      - name: Build BusyBox
+        run: |
+          make
+          
+
       - name: Run Black Duck SCA scan
         uses: blackduck-inc/black-duck-security-scan@v2
         with:
